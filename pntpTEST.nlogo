@@ -45,7 +45,7 @@ ask tourists [
 
 ask patches [set pcolor green]
 ask patches with [ path >= 0 ] [set pcolor red sprout-nodes 1 [set color red]]
-ask tourists [set destination one-of nodes  
+ask tourists [set destination one-of nodes 
 ]
 
 ask nodes [ht create-links-with other nodes in-radius 1 ]
@@ -61,7 +61,6 @@ to go
   move
   
  ]
-  ;create-tourists num-tourists
   
   ask tourists with [age = 0]
  [
