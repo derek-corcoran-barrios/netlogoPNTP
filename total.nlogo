@@ -1,8 +1,8 @@
-
+;;hora del dia es ticks / ticks-to-an-hour mod 24
 extensions [ gis ]
 
 
-globals [ pathation ]
+globals [ pathation aa ]
 
 patches-own [ path order excess]
 
@@ -29,11 +29,11 @@ reset-ticks
 set-default-shape tourists "person"
 set-default-shape houses "house"
 
-create-tourists num-tourists
+create-tourists random-normal num-tourists (num-tourists / 4 )
 
 
 ask tourists [
-  set size 10
+  set size 8
   set color blue
   setxy -18 -170
   set origin 2
@@ -49,17 +49,22 @@ ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]
 ask patch -15 -171 [set order 1]
 ask patch -50 -80 [set order 2]
 ask patch -115 4 [set order 3]
-ask patch -51 -80 [set order 4]
+ask patch -48 -78 [set pcolor red set order 4]
 ask patch -11 -17 [set order 5]
 ask patch -129 64 [set pcolor green]
 ask patch -129 60 [set pcolor red]
 ask patch -9 -17 [set pcolor green]
 ask patch -11 -17 [set pcolor red]
-ask patch -5 39 [set pcolor red]
+ask patch -5 39 [set pcolor red set order 6]
+ask patch -8 -25 [set pcolor red set order 7]
+ask patch 22 -21 [set order 8]
+ask patch 36 -22 [set order 9]
 ask patch 98 58 [set pcolor green]
-ask patch 96 57 [set pcolor red]
+ask patch 96 57 [set pcolor red set order 10]
 ask patch 77 79 [set pcolor green]
-ask patch 73 79 [set pcolor red]
+ask patch 73 79 [set pcolor red set order 11]
+ask patch 115 32 [set pcolor red set order 12]
+ask patch 129 54 [set pcolor red set order 13]
 ;de aca en adelante es para dejarlo solo W
 ask patch -76 94 [set pcolor green]
 ask patch -30 159 [set pcolor green]
@@ -99,6 +104,13 @@ to go
       set excess (excess + 1)
     ] 
   ] 
+  
+  if ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal num-tourists (num-tourists / 4 ) [ setxy -18 -170 set size 8
+  set destination one-of patches with 
+      [
+        order = 2   ]
+  ]
+]
  tick
 end
 
@@ -118,9 +130,12 @@ to move
     if ticks - ticks-since-here > ticks-to-stay-on-patch patch-here
     [
       set ticks-since-here 0
-       set destination one-of patches in-radius 120 with 
+      set origin order
+      ask patch-here [set aa order]
+      ask turtles-on patch 129 54 [die]
+      set destination one-of patches with 
       [
-        pcolor = red ]
+        order = (aa + 1) ]
   ]
   ]
   [ face destination
@@ -229,7 +244,7 @@ num-tourists
 num-tourists
 0
 300
-300
+20
 2
 1
 NIL
@@ -346,7 +361,7 @@ proportion
 proportion
 0
 1
-0.43
+0.46
 0.01
 1
 NIL
@@ -384,6 +399,21 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot patch -50 -80 excess"
+
+SLIDER
+25
+401
+197
+434
+ticks-to-an-hour
+ticks-to-an-hour
+38
+100
+50
+2
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?

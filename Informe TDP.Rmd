@@ -14,6 +14,8 @@ library("dplyr", lib.loc="~/R/win-library/3.1")
 library("lubridate", lib.loc="~/R/win-library/3.2")
 library("ggplot2", lib.loc="~/R/win-library/3.2")
 library("knitr", lib.loc="~/R/win-library/3.2")
+library(texreg)
+library(xtable)
 ```
 
 ##Estudio de distribución del flujo de turistas
@@ -85,10 +87,11 @@ kable(t(as.matrix(tapply(Eco_Cuernos$Eco.Cuernos,Eco_Cuernos$X.1,mean))),digits=
 ```
 
 Ahora realizamos un ANOVA de dos vias
-```{r}
+```{r, results='asis', echo=FALSE}
 attach(Eco_Cuernos)
 ANOVA.Cuernos <- aov(Eco.Cuernos ~ X.1*dia.semana)
-summary(ANOVA.Cuernos)
+fm1.table <- xtable(ANOVA.Cuernos)
+print(fm1.table,floating=FALSE)
 interaction.plot(X.1, dia.semana, Eco.Cuernos, type="b")
 ```
 
@@ -148,3 +151,6 @@ plot(Por.Dia~date.as.factor, xlab="Fecha", ylab="Número de turistas",type="b", 
 Estas caracterizaciones se utilizaran para una simulación espacialmente explicita utilizando modelaciónes en base de agentes, apoyandose en la información generada por el resto de los grupos del CEQUA.
 
 
+```{r}
+mean(eco.cuernos.12$Eco.Cuernos)/sd(eco.cuernos.12$Eco.Cuernos)
+```
