@@ -4,7 +4,7 @@ extensions [ gis ]
 
 globals [ pathation ]
 
-patches-own [ path ]
+patches-own [ path order excess]
 
 
 to load-gis
@@ -22,7 +22,7 @@ end
 breed [houses house]
 breed [tourists tourist]
 breed [nodes node]
-tourists-own [age destination
+tourists-own [age origin destination
   ticks-since-here]
 to setup
 reset-ticks
@@ -30,21 +30,43 @@ set-default-shape tourists "person"
 set-default-shape houses "house"
 
 create-tourists num-tourists
-create-houses num-refugios
+
 
 ask tourists [
   set size 10
   set color blue
-   setxy 108 38
+  setxy -18 -170
+  set origin 2
    ;pen-down
   ]
 
+ask n-of (proportion * num-tourists) tourists [ setxy 128 48]
+
+ask patches [set order 0 set excess 0]
 ask patches [set pcolor green]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
-ask tourists [ set destination one-of patches in-radius 120 with 
+ask patch -15 -171 [set order 1]
+ask patch -50 -80 [set order 2]
+ask patch -115 4 [set order 3]
+ask patch -51 -80 [set order 4]
+ask patch -11 -17 [set order 5]
+ask patch -129 64 [set pcolor green]
+ask patch -129 60 [set pcolor red]
+ask patch -9 -17 [set pcolor green]
+ask patch -11 -17 [set pcolor red]
+ask patch -5 39 [set pcolor red]
+ask patch 98 58 [set pcolor green]
+ask patch 96 57 [set pcolor red]
+ask patch 77 79 [set pcolor green]
+ask patch 73 79 [set pcolor red]
+;de aca en adelante es para dejarlo solo W
+ask patch -76 94 [set pcolor green]
+ask patch -30 159 [set pcolor green]
+ask patch 114 171 [set pcolor green]
+ask tourists [ set destination one-of patches with 
       [
-        pcolor = red   ]
+        order = 2   ]
     ]
 
 
@@ -70,6 +92,13 @@ to go
    set size 2
    set color blue
    ]
+ ask patches with [pcolor = red] 
+  [ 
+    if count turtles-here > threshold ;; If more than one turtle on a patch they will fight to the death 
+    [   
+      set excess (excess + 1)
+    ] 
+  ] 
  tick
 end
 
@@ -91,7 +120,7 @@ to move
       set ticks-since-here 0
        set destination one-of patches in-radius 120 with 
       [
-        pcolor = red   ]
+        pcolor = red ]
   ]
   ]
   [ face destination
@@ -199,24 +228,9 @@ SLIDER
 num-tourists
 num-tourists
 0
-100
-72
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-23
-225
-195
-258
-num-refugios
-num-refugios
-0
-100
-1
-1
+300
+300
+2
 1
 NIL
 HORIZONTAL
@@ -281,7 +295,7 @@ time-of-stay
 time-of-stay
 0
 180
-127
+134
 1
 1
 NIL
@@ -303,7 +317,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles-on patch -9 -17"
+"default" 1.0 0 -16777216 true "" "plot count turtles-on patch -11 -17"
 
 PLOT
 1043
@@ -322,6 +336,54 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot count turtles-on patch 36 -22"
+
+SLIDER
+22
+229
+194
+262
+proportion
+proportion
+0
+1
+0.43
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+27
+349
+199
+382
+threshold
+threshold
+1
+400
+19
+1
+1
+NIL
+HORIZONTAL
+
+PLOT
+809
+235
+1009
+385
+Exceso1
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot patch -50 -80 excess"
 
 @#$#@#$#@
 ## WHAT IS IT?
