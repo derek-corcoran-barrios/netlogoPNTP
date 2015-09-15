@@ -23,29 +23,30 @@ breed [houses house]
 breed [tourists tourist]
 breed [nodes node]
 tourists-own [age origin destination
-  ticks-since-here]
+  ticks-since-here w]
 to setup
 reset-ticks
 set-default-shape tourists "person"
 set-default-shape houses "house"
 
-create-tourists random-normal num-tourists (num-tourists / 4 )
+create-tourists random-normal num-tourists (num-tourists / 3.5 )
 
 
 ask tourists [
   set size 8
-  set color blue
   setxy -18 -170
   set origin 2
+  set w 0
    ;pen-down
   ]
 
-ask n-of (proportion * num-tourists) tourists [ setxy 128 48]
+ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1]
 
 ask patches [set order 0 set excess 0]
 ask patches [set pcolor green]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
+ask patch -19 -170 [set pcolor red set order 0]
 ask patch -15 -171 [set order 1]
 ask patch -50 -80 [set order 2]
 ask patch -115 4 [set order 3]
@@ -69,11 +70,15 @@ ask patch 129 54 [set pcolor red set order 13]
 ask patch -76 94 [set pcolor green]
 ask patch -30 159 [set pcolor green]
 ask patch 114 171 [set pcolor green]
-ask tourists [ set destination one-of patches with 
+ask tourists with [w = 0] [ set destination one-of patches with 
       [
         order = 2   ]
     ]
 
+ask tourists with [w = 1] [ set destination one-of patches with 
+      [
+        order =   12 ]
+    ]
 
 ask houses [
    set color orange
@@ -105,10 +110,16 @@ to go
     ] 
   ] 
   
-  if ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal num-tourists (num-tourists / 4 ) [ setxy -18 -170 set size 8
+  if ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal ((1 - proportion) * num-tourists) ((proportion * num-tourists) / 3.5 ) [ setxy -18 -170 set size 8 set w 0
   set destination one-of patches with 
       [
         order = 2   ]
+  ]
+]
+  if ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (proportion * num-tourists) ((proportion * num-tourists) / 3.5 ) [ setxy 128 48 set size 8 set w 1
+  set destination one-of patches with 
+      [
+        order = 12   ]
   ]
 ]
  tick
@@ -133,9 +144,13 @@ to move
       set origin order
       ask patch-here [set aa order]
       ask turtles-on patch 129 54 [die]
-      set destination one-of patches with 
+      ask turtles-on patch -19 -170 [die]
+      if w = 0 [set destination one-of patches with 
       [
-        order = (aa + 1) ]
+        order = (aa + 1) ]]
+      if w = 1 [set destination one-of patches with 
+      [
+        order = (aa - 1) ]]
   ]
   ]
   [ face destination
@@ -245,7 +260,7 @@ num-tourists
 0
 300
 20
-2
+1
 1
 NIL
 HORIZONTAL
@@ -361,7 +376,7 @@ proportion
 proportion
 0
 1
-0.46
+0.47
 0.01
 1
 NIL
@@ -376,29 +391,11 @@ threshold
 threshold
 1
 400
-19
+70
 1
 1
 NIL
 HORIZONTAL
-
-PLOT
-809
-235
-1009
-385
-Exceso1
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot patch -50 -80 excess"
 
 SLIDER
 25
@@ -410,7 +407,7 @@ ticks-to-an-hour
 38
 100
 50
-2
+1
 1
 NIL
 HORIZONTAL
