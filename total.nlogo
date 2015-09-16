@@ -43,7 +43,6 @@ ask tourists [
 ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1]
 
 ask patches [set order 0 set excess 0]
-ask patches [set pcolor green]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
 ask patch -119 -170 [set pcolor red set order 0]
@@ -53,7 +52,7 @@ ask patch -115 4 [set order 3]
 ask patch -48 -78 [set pcolor red set order 4]
 ask patch -11 -17 [set order 5]
 ask patch -129 64 [set pcolor green]
-ask patch -129 60 [set pcolor red]
+ask patch -129 60 [set pcolor red set order -1]
 ask patch -9 -17 [set pcolor green]
 ask patch -11 -17 [set pcolor red]
 ask patch -5 39 [set pcolor red set order 6]
@@ -328,7 +327,7 @@ time-of-stay
 time-of-stay
 0
 180
-133
+88
 1
 1
 NIL
@@ -462,6 +461,24 @@ sunset
 1
 NIL
 HORIZONTAL
+
+PLOT
+1045
+222
+1245
+372
+Turistas totales
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count tourists"
 
 @#$#@#$#@
 ## WHAT IS IT?
