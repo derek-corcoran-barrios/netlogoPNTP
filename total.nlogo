@@ -46,7 +46,7 @@ ask patches [set order 0 set excess 0]
 ask patches [set pcolor green]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
-ask patch -19 -170 [set pcolor red set order 0]
+ask patch -119 -170 [set pcolor red set order 0]
 ask patch -15 -171 [set order 1]
 ask patch -50 -80 [set order 2]
 ask patch -115 4 [set order 3]
@@ -89,6 +89,10 @@ end
 
 
 to go
+ 
+ ask patches with [pcolor = green] [if  (((ticks / ticks-to-an-hour) mod 24) = sunset) [set pcolor black]]
+  ask patches with [pcolor = black] [if (((ticks / ticks-to-an-hour) mod 24) = sunrise) [set pcolor green]]
+ 
  ask tourists [
   
   move
@@ -110,13 +114,13 @@ to go
     ] 
   ] 
   
-  if ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal ((1 - proportion) * num-tourists) ((proportion * num-tourists) / 3.5 ) [ setxy -18 -170 set size 8 set w 0
+  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal ((1 - proportion) * num-tourists) ((proportion * num-tourists) / 3.5 ) [ setxy -18 -170 set size 8 set w 0
   set destination one-of patches with 
       [
         order = 2   ]
   ]
 ]
-  if ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (proportion * num-tourists) ((proportion * num-tourists) / 3.5 ) [ setxy 128 48 set size 8 set w 1
+  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (proportion * num-tourists) ((proportion * num-tourists) / 3.5 ) [ setxy 128 48 set size 8 set w 1
   set destination one-of patches with 
       [
         order = 12   ]
@@ -144,7 +148,7 @@ to move
       set origin order
       ask patch-here [set aa order]
       ask turtles-on patch 129 54 [die]
-      ask turtles-on patch -19 -170 [die]
+      ask turtles-on patch -119 -170 [die]
       if w = 0 [set destination one-of patches with 
       [
         order = (aa + 1) ]]
@@ -153,8 +157,8 @@ to move
         order = (aa - 1) ]]
   ]
   ]
-  [ face destination
-    forward 1
+  [ if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [face destination]
+    if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [forward 1]
     if ( patch-here = destination ) 
     [
       set ticks-since-here ticks
@@ -317,15 +321,15 @@ NIL
 1
 
 SLIDER
-21
-287
-193
-320
+23
+250
+195
+283
 time-of-stay
 time-of-stay
 0
 180
-134
+133
 1
 1
 NIL
@@ -368,25 +372,25 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot count turtles-on patch 36 -22"
 
 SLIDER
-22
-229
-194
-262
+23
+207
+195
+240
 proportion
 proportion
 0
 1
-0.47
+0.46
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-27
-349
-199
-382
+25
+295
+197
+328
 threshold
 threshold
 1
@@ -397,17 +401,65 @@ threshold
 NIL
 HORIZONTAL
 
+PLOT
+792
+215
+992
+365
+Exceso1
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot [excess] of patch -11 -17"
+
 SLIDER
-25
-401
-197
-434
+26
+344
+198
+377
 ticks-to-an-hour
 ticks-to-an-hour
 38
 100
 50
 1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+25
+385
+197
+418
+sunrise
+sunrise
+4
+10
+6
+0.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+21
+431
+193
+464
+sunset
+sunset
+16
+24
+22
+0.5
 1
 NIL
 HORIZONTAL
