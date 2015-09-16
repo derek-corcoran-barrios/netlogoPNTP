@@ -91,8 +91,9 @@ end
 to go
  
  ask patches with [pcolor = green] [if  (((ticks / ticks-to-an-hour) mod 24) = sunset) [set pcolor black]]
-  ask patches with [pcolor = black] [if (((ticks / ticks-to-an-hour) mod 24) = sunrise) [set pcolor green]]
- 
+ ask patches with [pcolor = black] [if (((ticks / ticks-to-an-hour) mod 24) = sunrise) [set pcolor green]]
+ ask turtles-on patch 129 54 [die]
+ ask turtles-on patch -119 -170 [die]
  ask tourists [
   
   move
@@ -144,27 +145,25 @@ to move
   [
     if ticks - ticks-since-here > ticks-to-stay-on-patch patch-here
     [
-      set ticks-since-here 0
-      set origin order
-      ask patch-here [set aa order]
-      ask turtles-on patch 129 54 [die]
-      ask turtles-on patch -119 -170 [die]
-      if w = 0 [set destination one-of patches with 
+      if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [set ticks-since-here 0]
+      if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [set origin order]
+      ask patch-here [set aa order]      
+      if w = 0 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [set destination one-of patches with 
       [
         order = (aa + 1) ]]
-      if w = 1 [set destination one-of patches with 
+      if w = 1 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset)[set destination one-of patches with 
       [
         order = (aa - 1) ]]
   ]
   ]
-  [ if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [face destination]
-    if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [forward 1]
+  [ face destination
+    forward 1
     if ( patch-here = destination ) 
     [
       set ticks-since-here ticks
     ]
     set age (age + 1 )
-    while [pcolor = green] [back 1 left 90 right (random 180) forward 1]
+    while [pcolor = green or pcolor = black] [back 1 left 90 right (random 180) forward 1]
   ]
   
 end
@@ -358,7 +357,7 @@ PLOT
 22
 1243
 172
-plot 1
+camp 2
 NIL
 NIL
 0.0
