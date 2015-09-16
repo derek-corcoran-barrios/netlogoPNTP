@@ -42,7 +42,7 @@ ask tourists [
 
 ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1 set destination -1]
 
-ask patches [set order 0 set excess 0 set atraction 1]
+ask patches [set order -1 set excess 0 set atraction 1]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
 ask patch -119 -170 [set pcolor red set order 0]
@@ -92,6 +92,7 @@ to go
  
  ask patches with [pcolor = green] [if  (((ticks / ticks-to-an-hour) mod 24) = sunset) [set pcolor black]]
  ask patches with [pcolor = black] [if (((ticks / ticks-to-an-hour) mod 24) = sunrise) [set pcolor green]]
+ 
  ask turtles-on patch 129 54 [die]
  ask turtles-on patch -119 -170 [die]
  ask tourists [
