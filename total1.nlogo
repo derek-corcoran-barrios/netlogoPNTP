@@ -40,7 +40,7 @@ ask tourists [
    ;pen-down
   ]
 
-ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1 set destination -1]
+ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1]
 
 ask patches [set order 0 set excess 0 set atraction 1]
 ask patches with [ path > 0 ] [set pcolor white ]
