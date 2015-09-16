@@ -4,7 +4,7 @@ extensions [ gis ]
 
 globals [ pathation aa ]
 
-patches-own [ path order excess]
+patches-own [ path order excess atraction]
 
 
 to load-gis
@@ -42,7 +42,7 @@ ask tourists [
 
 ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1]
 
-ask patches [set order 0 set excess 0]
+ask patches [set order 0 set excess 0 set atraction 1]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
 ask patch -119 -170 [set pcolor red set order 0]
@@ -52,10 +52,10 @@ ask patch -115 4 [set order 3]
 ask patch -48 -78 [set pcolor red set order 4]
 ask patch -11 -17 [set order 5]
 ask patch -129 64 [set pcolor green]
-ask patch -129 60 [set pcolor red set order -1]
+
 ask patch -9 -17 [set pcolor green]
 ask patch -11 -17 [set pcolor red]
-ask patch -5 39 [set pcolor red set order 6]
+ask patch -5 39 [set pcolor red set order 6 set atraction 0.1]
 ask patch -8 -25 [set pcolor red set order 7]
 ask patch 22 -21 [set order 8]
 ask patch 36 -22 [set order 9]
@@ -63,12 +63,13 @@ ask patch 98 58 [set pcolor green]
 ask patch 96 57 [set pcolor red set order 10]
 ask patch 77 79 [set pcolor green]
 ask patch 73 79 [set pcolor red set order 11]
-ask patch 115 32 [set pcolor red set order 12]
+ask patch 115 32 [set pcolor red set order 12 set atraction 0.1]
 ask patch 129 54 [set pcolor red set order 13]
 ;de aca en adelante es para dejarlo solo W
 ask patch -76 94 [set pcolor green]
 ask patch -30 159 [set pcolor green]
 ask patch 114 171 [set pcolor green]
+ask patch -129 60 [set pcolor green set order -1]
 ask tourists with [w = 0] [ set destination one-of patches with 
       [
         order = 2   ]
@@ -91,6 +92,7 @@ to go
  
  ask patches with [pcolor = green] [if  (((ticks / ticks-to-an-hour) mod 24) = sunset) [set pcolor black]]
  ask patches with [pcolor = black] [if (((ticks / ticks-to-an-hour) mod 24) = sunrise) [set pcolor green]]
+ 
  ask turtles-on patch 129 54 [die]
  ask turtles-on patch -119 -170 [die]
  ask tourists [
@@ -108,7 +110,7 @@ to go
    ]
  ask patches with [pcolor = red] 
   [ 
-    if count turtles-here > threshold ;; If more than one turtle on a patch they will fight to the death 
+    if count turtles-here > (threshold * atraction) ;; If more than one turtle on a patch they will fight to the death 
     [   
       set excess (excess + 1)
     ] 
@@ -149,14 +151,16 @@ to move
       ask patch-here [set aa order]      
       if w = 0 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [set destination one-of patches with 
       [
-        order = (aa + 1) ]]
+        order = (aa + 1) ]];[set destination min-one-of (patches with [pcolor = red ]) [distance myself]]
       if w = 1 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset)[set destination one-of patches with 
       [
-        order = (aa - 1) ]]
+        order = (aa - 1) ]];[set destination min-one-of (patches with [pcolor = red ]) [distance myself]]
   ]
   ]
-  [ face destination
-    forward 1
+  [ ifelse (((ticks / ticks-to-an-hour) mod 24) > (sunrise - 2)) and (((ticks / ticks-to-an-hour) mod 24) < (sunset + 2))[ face destination
+    forward 1][set destination min-one-of (patches with [pcolor = red ]) [distance myself] face destination fd 1
+    
+    ]
     if ( patch-here = destination ) 
     [
       set ticks-since-here ticks
@@ -327,7 +331,7 @@ time-of-stay
 time-of-stay
 0
 180
-88
+31
 1
 1
 NIL
@@ -463,10 +467,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1045
-222
-1245
-372
+1040
+215
+1240
+365
 Turistas totales
 NIL
 NIL
