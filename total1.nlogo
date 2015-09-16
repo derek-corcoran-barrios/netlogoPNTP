@@ -42,7 +42,7 @@ ask tourists [
 
 ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1 set destination -1]
 
-ask patches [set order -1 set excess 0 set atraction 1]
+ask patches [set order 0 set excess 0 set atraction 1]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
 ask patch -119 -170 [set pcolor red set order 0]
