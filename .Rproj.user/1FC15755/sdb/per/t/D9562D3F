@@ -1,0 +1,17 @@
+{
+    "contents" : "# Aca en el nlDir hay que poner el directorio para llegar a donde esta instalado netlogo\nlibrary(RNetLogo)\nnlDir <- \"C:/Program Files (x86)/NetLogo 5.1.0\"\nsetwd(nlDir)\n\nnl.path <- getwd()\nNLStart(nl.path)\n# En NLLoadModel va el directorio donde guardas el modelo\n\nNLLoadModel <-\"C:/Users/usuario/netlogoPNTP/total.nlogo\"\n\n#Ahora metemos la parte expacialmente explicita en el modelo\n\nNLCommand(\"load-gis\")    # carga el sig desde el archivo ascii\nNLCommand(\"get-paths\")   # obtiene los valores del raster \n\n#Seteamos los parametros del modelo\n\nNLCommand(\"set num-tourists to 20\") # numero de turistas, valores entre 0 y 300\nNLCommand(\"set proportion to 0.46\") # proporcion de turistas que empieza en hosteria las torres entre 0 y 1\nNLCommand(\"set time-of-stay to 134\") # cuanto tiempo se queda un turista en un campamento de 0 a 180 ticks\nNLCommand(\"set threshold to 70\") # cuanto es conciderado un exceso de turistas en un campamento entre 1 y 400\nNLCommand(\"set ticks-to-an-hour to 50\") # cuantos ticks son una hora entre 38 y 100\n\n#hacemos andar el modelo\nNLCommand(\"go\")                # Abrir el modelo desde R",
+    "created" : 1442336390743.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2538519740",
+    "id" : "D9562D3F",
+    "lastKnownWriteTime" : 1442358030,
+    "path" : "C:/Users/usuario/netlogoPNTP/TorresDelPaineNetlogo.R",
+    "project_path" : "TorresDelPaineNetlogo.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
