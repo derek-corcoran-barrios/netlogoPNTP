@@ -1,0 +1,17 @@
+{
+    "contents" : "Turistas.totales <- read.csv(\"C:/Users/usuario/netlogoPNTP/total1 Turistas totales.csv\")\n\nlibrary (dplyr)\n\nTuristas.totales <- mutate(Turistas.totales, Day= Ticks / (24*50))\n\nplot(Tourists~Day, data= Turistas.totales, type =\"l\")\n",
+    "created" : 1442509024677.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3908616743",
+    "id" : "3136631",
+    "lastKnownWriteTime" : 1442509534,
+    "path" : "C:/Users/usuario/netlogoPNTP/days.R",
+    "project_path" : "days.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
