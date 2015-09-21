@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1442509183407.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8C9EAF9",
+    "lastKnownWriteTime" : 27303570963497028,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "total1.Turistas.totales",
+        "contentUrl" : "content?title=total1.Turistas.totales&file=5caaa03289974a1c803c1d0fb3392a98.htm",
+        "displayedObservations" : 1000,
+        "displayedVariables" : 3,
+        "totalObservations" : 6683,
+        "variables" : 3
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

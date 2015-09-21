@@ -40,31 +40,31 @@ ask tourists [
    ;pen-down
   ]
 
-ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1]
+ask n-of (proportion * num-tourists) tourists [ setxy 128 48 set w 1 set destination 3]
 
 ask patches [set order 0 set excess 0 set atraction 1]
 ask patches with [ path > 0 ] [set pcolor white ]
 ask patches with [ path >= 100 ] [set pcolor red sprout-houses 1 [set color red]]
-ask patch -119 -170 [set pcolor red set order 0]
-ask patch -15 -171 [set order 1]
-ask patch -50 -80 [set order 2]
-ask patch -115 4 [set order 3]
-ask patch -48 -78 [set pcolor red set order 4]
-ask patch -11 -17 [set order 5]
+ask patch -19 -170 [set pcolor red set order 1]
+ask patch -15 -171 [set order 2]
+ask patch -50 -80 [set order 3]
+ask patch -115 4 [set order 4]
+ask patch -48 -78 [set pcolor red set order 5]
+ask patch -11 -17 [set order 6]
 ask patch -129 64 [set pcolor green]
 
 ask patch -9 -17 [set pcolor green]
 ask patch -11 -17 [set pcolor red]
-ask patch -5 39 [set pcolor red set order 6 set atraction 0.1]
-ask patch -8 -25 [set pcolor red set order 7]
-ask patch 22 -21 [set order 8]
-ask patch 36 -22 [set order 9]
+ask patch -5 39 [set pcolor red set order 7 set atraction 0.1]
+ask patch -8 -25 [set pcolor red set order 8]
+ask patch 22 -21 [set order 9]
+ask patch 36 -22 [set order 10]
 ask patch 98 58 [set pcolor green]
-ask patch 96 57 [set pcolor red set order 10]
+ask patch 96 57 [set pcolor red set order 11]
 ask patch 77 79 [set pcolor green]
-ask patch 73 79 [set pcolor red set order 11]
-ask patch 115 32 [set pcolor red set order 12 set atraction 0.1]
-ask patch 129 54 [set pcolor red set order 13]
+ask patch 73 79 [set pcolor red set order 12]
+ask patch 115 32 [set pcolor red set order 13 set atraction 0.1]
+ask patch 129 54 [set pcolor red set order 14]
 ;de aca en adelante es para dejarlo solo W
 ask patch -76 94 [set pcolor green]
 ask patch -30 159 [set pcolor green]
@@ -72,12 +72,12 @@ ask patch 114 171 [set pcolor green]
 ask patch -129 60 [set pcolor green set order -1]
 ask tourists with [w = 0] [ set destination one-of patches with 
       [
-        order = 2   ]
+        order = 3   ]
     ]
 
 ask tourists with [w = 1] [ set destination one-of patches with 
       [
-        order =   12 ]
+        order =   13 ]
     ]
 
 ask houses [
@@ -96,18 +96,13 @@ to go
  ask turtles-on patch 129 54 [die]
  ask turtles-on patch -119 -170 [die]
  ask tourists [
-  
+  set age (age + 1 )
   move
   
  ]
   ;create-tourists num-tourists
   
-  ask tourists with [age = 0]
- [
-   setxy 10 -10
-   set size 2
-   set color blue
-   ]
+ 
  ask patches with [pcolor = red] 
   [ 
     if count turtles-here > (threshold * atraction) ;; If more than one turtle on a patch they will fight to the death 
@@ -165,7 +160,6 @@ to move
     [
       set ticks-since-here ticks
     ]
-    set age (age + 1 )
     while [pcolor = green or pcolor = black] [back 1 left 90 right (random 180) forward 1]
   ]
   
