@@ -69,16 +69,20 @@ ask patch -5 39 [set pcolor red set orderW1 7 set orderW2 8 set atraction 0.1]
 ask patch -5 49 [set plabel 7 set plabel-color black]
 ask patch -8 -25 [set pcolor red set orderW1 8 set orderW2 7]
 ask patch -8 -15 [set plabel 8 set plabel-color black]
-ask patch -8 -5 [set plabel 8 set plabel-color black]
 ask patch 22 -21 [set orderW1 9 set orderW2 6]
 ask patch 22 -11 [set plabel 9 set plabel-color black]
 ask patch 36 -22 [set orderW1 10 set orderW2 5]
+ask patch 36 -12 [set plabel 10 set plabel-color black]
 ask patch 98 58 [set pcolor green]
 ask patch 96 57 [set pcolor red set orderW1 11 set orderW2 4]
+ask patch 96 67 [set plabel 11 set plabel-color black]
 ask patch 77 79 [set pcolor green]
 ask patch 73 79 [set pcolor red set orderW1 12 set orderW2 3]
+ask patch 73 89 [set plabel 12 set plabel-color black]
 ask patch 115 32 [set pcolor red set orderW1 13 set orderW2 2 set atraction 0.1]
+ask patch 115 42 [set plabel 13 set plabel-color black]
 ask patch 129 54 [set pcolor red set orderW1 14 set orderW2 1]
+ask patch 129 64 [set plabel 14 set plabel-color black]
 ;de aca en adelante es para dejarlo solo W
 ask patch -76 94 [set pcolor green]
 ask patch -30 159 [set pcolor green]
@@ -196,8 +200,6 @@ to move
   ]
 
 end
-
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -344,10 +346,10 @@ NIL
 1
 
 SLIDER
-25
-331
-197
-364
+23
+293
+195
+326
 time-of-stay
 time-of-stay
 0
@@ -359,11 +361,11 @@ NIL
 HORIZONTAL
 
 PLOT
-788
-22
-988
-172
-Camp 1
+776
+476
+1233
+626
+camp 10
 NIL
 NIL
 0.0
@@ -371,28 +373,14 @@ NIL
 0.0
 10.0
 true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles-on patch -11 -17"
-
-PLOT
-1043
-22
-1243
-172
-camp 2
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
 true
-false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles-on patch 36 -22"
+"Total" 1.0 0 -16777216 true "" "plot count tourists-on patch 36 -22"
+"Glaciar" 1.0 0 -1184463 true "" "plot count (tourists-on patch 36 -22) with [color = yellow]"
+"W Carr" 1.0 0 -2674135 true "" "plot count (tourists-on patch 36 -22) with [color = red]"
+"W Paine" 1.0 0 -13345367 true "" "plot count (tourists-on patch 36 -22) with [color = blue]"
+"Exceso" 1.0 0 -13840069 true "" "Plot  (([excess] of patch 36 -22)/ ticks-to-an-hour )"
 
 SLIDER
 23
@@ -410,10 +398,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-27
-376
-199
-409
+25
+338
+197
+371
 threshold
 threshold
 1
@@ -424,29 +412,11 @@ threshold
 NIL
 HORIZONTAL
 
-PLOT
-792
-215
-992
-365
-Exceso1
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot [excess] of patch -11 -17"
-
 SLIDER
-28
-425
-200
-458
+26
+387
+198
+420
 ticks-to-an-hour
 ticks-to-an-hour
 38
@@ -458,10 +428,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-27
-466
-199
-499
+25
+428
+197
+461
 sunrise
 sunrise
 4
@@ -473,10 +443,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-26
-511
-198
-544
+21
+474
+193
+507
 sunset
 sunset
 16
@@ -488,10 +458,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1040
-215
-1240
-365
+776
+12
+1233
+162
 Turistas totales
 NIL
 NIL
@@ -500,10 +470,13 @@ NIL
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count tourists"
+"Total" 1.0 0 -16777216 true "" "plot count tourists"
+"Glaciar" 1.0 0 -1184463 true "" "plot count tourists with [color = yellow]"
+"W Carr" 1.0 0 -2674135 true "" "plot count tourists with [color = red]"
+"W Paine" 1.0 0 -13345367 true "" "plot count tourists with [color = blue]"
 
 SLIDER
 25
@@ -519,6 +492,72 @@ num-tourists-w2
 1
 NIL
 HORIZONTAL
+
+PLOT
+779
+166
+1232
+316
+Camp 4
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"Total" 1.0 0 -16777216 true "" "plot count tourists-on patch -115 4"
+"Glaciar" 1.0 0 -1184463 true "" "plot count (tourists-on patch -115 4) with [color = yellow]"
+"W Car" 1.0 0 -2674135 true "" "plot count (tourists-on patch -115 4) with [color = red]"
+"W Paine" 1.0 0 -13345367 true "" "plot count (tourists-on patch -115 4) with [color = blue]"
+"Exceso" 1.0 0 -13840069 true "" "plot (([excess] of patch -115 4)/ ticks-to-an-hour)"
+
+PLOT
+780
+321
+1232
+471
+Camp 7
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"Total" 1.0 0 -16777216 true "" "plot count tourists-on patch -5 39"
+"Glaciar" 1.0 0 -1184463 true "" "plot count (tourists-on patch -5 39) with [color = yellow]"
+"W Carr" 1.0 0 -2674135 true "" "plot count (tourists-on patch -5 39) with [color = red]"
+"W Paine" 1.0 0 -13345367 true "" "plot count (tourists-on patch -5 39) with [color = blue]"
+"Exceso" 1.0 0 -13840069 true "" "Plot  (([excess] of patch -5 39)/ ticks-to-an-hour )"
+
+PLOT
+779
+639
+1233
+789
+Camp 12
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"Total" 1.0 0 -16777216 true "" "plot count tourists-on patch 73 79"
+"Glaciar" 1.0 0 -1184463 true "" "plot count (tourists-on patch 73 79) with [color = yellow]"
+"W Carr" 1.0 0 -2674135 true "" "plot count (tourists-on patch 73 79) with [color = red]"
+"W Paine" 1.0 0 -13345367 true "" "plot count (tourists-on patch 73 79) with [color = blue]"
+"Exceso" 1.0 0 -13840069 true "" "Plot  (([excess] of patch 73 79)/ ticks-to-an-hour )"
 
 @#$#@#$#@
 ## WHAT IS IT?
