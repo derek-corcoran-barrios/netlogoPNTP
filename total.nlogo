@@ -83,8 +83,9 @@ ask patch 77 79 [set pcolor green]
 ask patch 73 79 [set pcolor red set orderW1 12 set orderW2 3 set orderPP 2]
 ask patch 73 89 [set plabel 12 set plabel-color black]
 ask patch 115 32 [set pcolor red set orderW1 13 set orderW2 2 set orderPP 1 set atraction 0.1]
+ask patch 115 33 [set pcolor red set orderW1 13 set orderW2 2 set orderPP 4 set atraction 0.1]
 ask patch 115 42 [set plabel 13 set plabel-color black]
-ask patch 129 54 [set pcolor red set orderW1 14 set orderW2 1 set orderPP 4]
+ask patch 129 54 [set pcolor red set orderW1 14 set orderW2 1 set orderPP 5]
 ask patch 129 64 [set plabel 14 set plabel-color black]
 ;de aca en adelante es para dejarlo solo W
 ask patch -76 94 [set pcolor green]
@@ -144,25 +145,31 @@ to go
     ]
   ]
 
-  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal ( num-tourists-W1) ((num-tourists-W1) / 3.5 ) [set color red setxy -18 -170 set size 8 set w 1 set PG 0
+  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal ( num-tourists-W1) ((num-tourists-W1) / 3.5 ) [set color red setxy -18 -170 set size 8 set w 1 set PG 0 set PP 0
   set destination one-of patches with
       [
         orderW1 = 2   ]
   ]
 ]
-  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (num-tourists-W2) ((num-tourists-W2) / 3.5 ) [set color blue setxy 128 48 set size 8 set w 2 set PG 0
+  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (num-tourists-W2) ((num-tourists-W2) / 3.5 ) [set color blue setxy 128 48 set size 8 set w 2 set PG 0 set PP 0
   set destination one-of patches with
       [
         orderW2 = 2   ]
   ]
 ]
 
-  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (num-tourists-PG) ((num-tourists-PG) / 3.5 ) [set color yellow setxy -18 -170 set size 8 set w 0 set PG 1
+  if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (num-tourists-PG) ((num-tourists-PG) / 3.5 ) [set color yellow setxy -18 -170 set size 8 set w 0 set PG 1 set PP 0
   set destination one-of patches with
       [
         orderPG = 3   ]
   ]
 ]
+
+    if (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) and ticks mod ticks-to-an-hour = 0 [ create-tourists random-normal (num-tourists-PP) ((num-tourists-PP) / 3.5 ) [set color cyan setxy 128 48 set size 8 set w 0 set PG 0 set PP 1
+  set destination patch 115 32
+  ]
+]
+
  tick
 end
 
@@ -490,6 +497,7 @@ PENS
 "Glaciar" 1.0 0 -1184463 true "" "plot count tourists with [color = yellow]"
 "W Carr" 1.0 0 -2674135 true "" "plot count tourists with [color = red]"
 "W Paine" 1.0 0 -13345367 true "" "plot count tourists with [color = blue]"
+"Torres" 1.0 0 -11221820 true "" "plot count tourists with [color = cyan]"
 
 SLIDER
 25
@@ -526,7 +534,7 @@ PENS
 "Glaciar" 1.0 0 -1184463 true "" "plot count (tourists-on patch -115 4) with [color = yellow]"
 "W Car" 1.0 0 -2674135 true "" "plot count (tourists-on patch -115 4) with [color = red]"
 "W Paine" 1.0 0 -13345367 true "" "plot count (tourists-on patch -115 4) with [color = blue]"
-"Exceso" 1.0 0 -13840069 true "" "plot (([excess] of patch -115 4)/ ticks-to-an-hour)"
+"Torres" 1.0 0 -11221820 true "" "plot count (tourists-on patch -115 4) with [color = cyan]"
 
 PLOT
 780
@@ -570,7 +578,8 @@ PENS
 "Glaciar" 1.0 0 -1184463 true "" "plot count (tourists-on patch 73 79) with [color = yellow]"
 "W Carr" 1.0 0 -2674135 true "" "plot count (tourists-on patch 73 79) with [color = red]"
 "W Paine" 1.0 0 -13345367 true "" "plot count (tourists-on patch 73 79) with [color = blue]"
-"Exceso" 1.0 0 -13840069 true "" "Plot  (([excess] of patch 73 79)/ ticks-to-an-hour )"
+"Torres" 1.0 0 -11221820 true "" "Plot count (tourists-on patch 73 79) with [color = cyan]"
+"exceso" 1.0 0 -13840069 true "" "plot (([excess] of patch 73 79)/ ticks-to-an-hour )"
 
 SLIDER
 23
@@ -581,7 +590,7 @@ num-tourists-PP
 num-tourists-PP
 0
 100
-4
+10
 1
 1
 NIL
