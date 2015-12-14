@@ -2,7 +2,7 @@
 extensions [ gis ]
 
 
-globals [ pathation aa bb cc]
+globals [ pathation aa bb cc dd]
 
 ;;orderW1 las carretas alas torres, orderW2 las torres a las carretas, orderPG Paine grande Grey
 patches-own [ path orderW1 orderW2 orderPG orderPP excess atraction]
@@ -43,11 +43,11 @@ ask tourists [
   set color red
    ;pen-down
   ]
-create-tourists random-normal num-tourists-W2 (num-tourists-W2 / 3.5 )[ setxy 128 48 set w 2 set PG 0 set PP 0 set destination 3 set color blue]
+create-tourists random-normal num-tourists-W2 (num-tourists-W2 / 3.5 )[ setxy 128 48 set w 2 set PG 0 set PP 0 set destination 3 set color blue set size 8]
 
-create-tourists random-normal num-tourists-PG (num-tourists-PG / 3.5 )[ setxy -18 -170 set w 0 set PG 1 set PP 0 set destination 3 set color yellow]
+create-tourists random-normal num-tourists-PG (num-tourists-PG / 3.5 )[ setxy -18 -170 set w 0 set PG 1 set PP 0 set destination 3 set color yellow set size 8]
 
-create-tourists random-normal num-tourists-PP (num-tourists-PP / 3.5 )[ setxy 128 48 set w 0 set PG 1 set PP 1 set destination 3 set color cyan]
+create-tourists random-normal num-tourists-PP (num-tourists-PP / 3.5 )[ setxy 128 48 set w 0 set PG 0 set PP 1 set destination patch 115 32 set color cyan set size 8]
 
 ask patches [set orderW1 0 set orderW2 0 set orderPG 0 set orderPP 0 set excess 0 set atraction 1]
 ask patches with [ path > 0 ] [set pcolor white ]
@@ -77,14 +77,14 @@ ask patch 22 -11 [set plabel 9 set plabel-color black]
 ask patch 36 -22 [set orderW1 10 set orderW2 5]
 ask patch 36 -12 [set plabel 10 set plabel-color black]
 ask patch 98 58 [set pcolor green]
-ask patch 96 57 [set pcolor red set orderW1 11 set orderW2 4]
+ask patch 96 57 [set pcolor red set orderW1 11 set orderW2 4 set orderPP 3]
 ask patch 96 67 [set plabel 11 set plabel-color black]
 ask patch 77 79 [set pcolor green]
-ask patch 73 79 [set pcolor red set orderW1 12 set orderW2 3]
+ask patch 73 79 [set pcolor red set orderW1 12 set orderW2 3 set orderPP 2]
 ask patch 73 89 [set plabel 12 set plabel-color black]
-ask patch 115 32 [set pcolor red set orderW1 13 set orderW2 2 set atraction 0.1]
+ask patch 115 32 [set pcolor red set orderW1 13 set orderW2 2 set orderPP 1 set atraction 0.1]
 ask patch 115 42 [set plabel 13 set plabel-color black]
-ask patch 129 54 [set pcolor red set orderW1 14 set orderW2 1 set orderPP 2]
+ask patch 129 54 [set pcolor red set orderW1 14 set orderW2 1 set orderPP 4]
 ask patch 129 64 [set plabel 14 set plabel-color black]
 ;de aca en adelante es para dejarlo solo W
 ask patch -76 94 [set pcolor green]
@@ -108,10 +108,10 @@ ask tourists with [PG = 1] [ set destination one-of patches with
     ]
 
 
-ask tourists with [PP = 1] [ set destination one-of patches with
-      [
-        orderPP =   2 ]
-    ]
+;ask tourists with [PP = 1] [ set destination one-of patches with
+      ;[
+        ;orderPP =   2 ]
+    ;]
 
 ask houses [
    set color orange
@@ -186,6 +186,7 @@ to move
       ask patch-here [set aa orderW1]
       ask patch-here [set bb orderW2]
       ask patch-here [set cc orderPG]
+      ask patch-here [set dd orderPP]
       if w = 1 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset) [set destination one-of patches with
       [
         orderW1 = (aa + 1) ]];[set destination min-one-of (patches with [pcolor = red ]) [distance myself]]
@@ -195,6 +196,9 @@ to move
       if PG = 1 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset)[set destination one-of patches with
       [
         orderPG = (cc + 1) ]];[set destination min-one-of (patches with [pcolor = red ]) [distance myself]]
+      if PP = 1 and (((ticks / ticks-to-an-hour) mod 24) > sunrise) and (((ticks / ticks-to-an-hour) mod 24) < sunset)[set destination one-of patches with
+      [
+        orderPP = (dd + 1) ]];[set destination min-one-of (patches with [pcolor = red ]) [distance myself]]
   ]
   ]
   [ ifelse (((ticks / ticks-to-an-hour) mod 24) > (sunrise - 2)) and (((ticks / ticks-to-an-hour) mod 24) < (sunset + 2))[ face destination
@@ -577,7 +581,7 @@ num-tourists-PP
 num-tourists-PP
 0
 100
-10
+4
 1
 1
 NIL
