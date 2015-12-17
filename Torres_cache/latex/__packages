@@ -5,3 +5,5 @@ RNetLogo
 dplyr
 ggplot2
 knitr
+gridExtra
+stargazer
