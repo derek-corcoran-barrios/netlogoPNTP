@@ -1,26 +1,37 @@
-# Aca en el nlDir hay que poner el directorio para llegar a donde esta instalado netlogo
 library(RNetLogo)
-nlDir <- "C:/Program Files (x86)/NetLogo 5.1.0"
-setwd(nlDir)
+library(dplyr)
+library(ggplot2)
+library(car)
 
-nl.path <- getwd()
-NLStart(nl.path)
-# En NLLoadModel va el directorio donde guardas el modelo
+nl.path <- "C:/Program Files (x86)/NetLogo 5.2.1"
+NLStart(nl.path, gui=TRUE)
 
-NLLoadModel <-"C:/Users/usuario/netlogoPNTP/total.nlogo"
+model.path <- file.path("C:/Users/corcoranbarriosd/Documents/Paine/total.nlogo")
+NLLoadModel(model.path)
+NLCommand("load-gis")
+NLCommand("get-paths")
+NLCommand("setup")
 
-#Ahora metemos la parte expacialmente explicita en el modelo
+NLDoCommand(351, "go")
 
-NLCommand("load-gis")    # carga el sig desde el archivo ascii
-NLCommand("get-paths")   # obtiene los valores del raster 
+DF <- NLDoReport(50000, "go", c("(ticks + 600) / (ticks-to-an-hour * 24)","count tourists"), as.data.frame = TRUE, df.col.names = c("Days", "Total.tourists"))
+#NLDoCommand(38400, "go")
+DF <- mutate(DF, day = ceiling(Days))
+DF <- mutate(DF, time = Days-(day-1))
 
-#Seteamos los parametros del modelo
+SumDF <-summarise(group_by(DF, day), mean = mean(Total.tourists), max.tourists = max(Total.tourists))
 
-NLCommand("set num-tourists to 20") # numero de turistas, valores entre 0 y 300
-NLCommand("set proportion to 0.46") # proporcion de turistas que empieza en hosteria las torres entre 0 y 1
-NLCommand("set time-of-stay to 134") # cuanto tiempo se queda un turista en un campamento de 0 a 180 ticks
-NLCommand("set threshold to 70") # cuanto es conciderado un exceso de turistas en un campamento entre 1 y 400
-NLCommand("set ticks-to-an-hour to 50") # cuantos ticks son una hora entre 38 y 100
+#a <-lm(logit(mean/SumDF$mean[length(SumDF$mean)])~day,data=SumDF)
+#asympt <-nls(mean~phi1/(1+exp(-(phi2+phi3*day))), start=list(phi1=400,phi2=-5.4567,phi3=.101),data=SumDF,trace=TRUE)
 
-#hacemos andar el modelo
-NLCommand("go")                # Abrir el modelo desde R
+ggplot(SumDF, aes(x= day, y = mean)) + geom_point() + geom_smooth()
+
+DF <- filter(DF, day > 6)
+DF$day <- as.factor(DF$day)
+DF$time <- as.factor(DF$time)
+AV.day <- summarise(group_by(DF, time), mean = mean(Total.tourists), SD = sd(Total.tourists))
+Av.day <- mutate(AV.day, up = mean + SD, low = mean - SD)
+ggplot(Av.day, aes(x= as.numeric(time), y = mean)) + geom_line() + geom_ribbon(aes(ymax= up, ymin = low))
+
+NLCommand("clear-all")
+NLQuit()

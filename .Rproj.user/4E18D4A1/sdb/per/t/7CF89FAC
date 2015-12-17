@@ -1,0 +1,18 @@
+{
+    "contents" : "library(RNetLogo)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(car)\n\nnl.path <- \"C:/Program Files (x86)/NetLogo 5.2.1\"\nNLStart(nl.path, gui=TRUE)\n\nmodel.path <- file.path(\"C:/Users/corcoranbarriosd/Documents/Paine/total.nlogo\")\nNLLoadModel(model.path)\nNLCommand(\"load-gis\")\nNLCommand(\"get-paths\")\nNLCommand(\"setup\")\n\nNLDoCommand(351, \"go\")\n\nDF <- NLDoReport(50000, \"go\", c(\"(ticks + 600) / (ticks-to-an-hour * 24)\",\"count tourists\"), as.data.frame = TRUE, df.col.names = c(\"Days\", \"Total.tourists\"))\n#NLDoCommand(38400, \"go\")\nDF <- mutate(DF, day = ceiling(Days))\nDF <- mutate(DF, time = Days-(day-1))\n\nSumDF <-summarise(group_by(DF, day), mean = mean(Total.tourists), max.tourists = max(Total.tourists))\n\n#a <-lm(logit(mean/SumDF$mean[length(SumDF$mean)])~day,data=SumDF)\n#asympt <-nls(mean~phi1/(1+exp(-(phi2+phi3*day))), start=list(phi1=400,phi2=-5.4567,phi3=.101),data=SumDF,trace=TRUE)\n\nggplot(SumDF, aes(x= day, y = mean)) + geom_point() + geom_smooth()\n\nDF <- filter(DF, day > 6)\nDF$day <- as.factor(DF$day)\nDF$time <- as.factor(DF$time)\nAV.day <- summarise(group_by(DF, time), mean = mean(Total.tourists), SD = sd(Total.tourists))\nAv.day <- mutate(AV.day, up = mean + SD, low = mean - SD)\nggplot(Av.day, aes(x= as.numeric(time), y = mean)) + geom_line() + geom_ribbon(aes(ymax= up, ymin = low))\n\nNLCommand(\"clear-all\")\nNLQuit()",
+    "created" : 1450284710110.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4089367728",
+    "id" : "7CF89FAC",
+    "lastKnownWriteTime" : 1450305824,
+    "path" : "~/Paine/TorresDelPaineNetlogo.R",
+    "project_path" : "TorresDelPaineNetlogo.R",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

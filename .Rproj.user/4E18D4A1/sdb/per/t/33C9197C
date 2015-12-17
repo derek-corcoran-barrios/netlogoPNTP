@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"Informe Torres del Paine\"\nauthor: \"Derek Corcoran\"\ndate: \"December 16, 2015\"\noutput: pdf_document\n---\n\n\n```{r, echo=FALSE, message=FALSE, warning=FALSE}\nlibrary(RNetLogo)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(knitr)\n```\n\n```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}\n\nnl.path <- \"C:/Program Files (x86)/NetLogo 5.2.1\"\nNLStart(nl.path, gui=TRUE)\n\nmodel.path <- file.path(\"C:/Users/corcoranbarriosd/Documents/Paine/total.nlogo\")\nNLLoadModel(model.path)\nNLCommand(\"load-gis\")\nNLCommand(\"get-paths\")\nNLCommand(\"setup\")\n\nNLDoCommand(351, \"go\")\n\nDF <- NLDoReport(10, \"go\", c(\"(ticks + 600) / (ticks-to-an-hour * 24)\",\"count tourists\", \"count tourists-on patch -19 -170\", \"count tourists-on patch -15 -171\", \"(count tourists-on patch -50 -80) + (count tourists-on patch -48 -78)\", \"count tourists-on patch -115 4\", \"(count tourists-on patch -11 -17) + (count tourists-on patch -8 -25)\", \"count tourists-on patch -5 39\", \"count tourists-on patch 22 -21\", \"count tourists-on patch 36 -22\", \"count tourists-on patch 96 57\", \"count tourists-on patch 73 79\", \"(count tourists-on patch 115 32) + (count tourists-on patch 115 33)\", \"count tourists-on patch 129 54\",\"(([excess] of patch 96 57)/ ticks-to-an-hour )\",\"((([excess] of patch 115 32)/ ticks-to-an-hour ) + (([excess] of patch 115 33)/ ticks-to-an-hour )) * 0.5\", \"(([excess] of patch 36 -22)/ ticks-to-an-hour )\", \"(([excess] of patch 22 -21)/ ticks-to-an-hour )\"), as.data.frame = TRUE, df.col.names = c(\"Days\", \"Total.tourists\", \"Tourists1\", \"Tourists2\", \"Tourists3\", \"Tourists4\", \"Tourists6\", \"Tourists7\", \"Tourists9\", \"Tourists10\", \"Tourists11\", \"Tourists12\", \"Tourists13\", \"Tourists14\", \"Exceso-Chileno\", \"Exceso-torre-cn\",\"Exceso-cuernos\", \"Exceso-Frances\"))\nNLCommand(\"clear-all\")\nNLQuit()\n```\n\n```{r, echo=FALSE, message=FALSE, warning=FALSE}\nDF <- mutate(DF, day = ceiling(Days))\nDF <- mutate(DF, time = Days-(day-1))\n\nsummary(DF)\n\nSumDF <-summarise(group_by(DF, day), mean = mean(Total.tourists), max.tourists = max(Total.tourists))\n\nggplot(SumDF, aes(x= day, y = mean)) + geom_point() + geom_smooth()\n\n#DF <- filter(DF, day > 6)\nDF$day <- as.factor(DF$day)\nDF$time <- as.factor(DF$time)\nAV.day <- summarise(group_by(DF, time), mean = mean(Total.tourists), SD = sd(Total.tourists))\nAv.day <- mutate(AV.day, up = mean + SD, low = mean - SD)\nggplot(Av.day, aes(x= as.numeric(time), y = mean)) + geom_smooth()\n```\n",
+    "created" : 1450313943801.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "911350571",
+    "id" : "33C9197C",
+    "lastKnownWriteTime" : 1450314749,
+    "path" : "~/Paine/Torres.Rmd",
+    "project_path" : "Torres.Rmd",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}
