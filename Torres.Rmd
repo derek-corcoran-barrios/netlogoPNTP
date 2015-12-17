@@ -1,6 +1,6 @@
 ---
 title: "Informe Torres del Paine"
-author: "Derek Corcoran"
+author: "Derek Corcoran e-mail: derek.corcoran.barrios@gmail.com" 
 date: "December 17, 2015"
 output: pdf_document
 toc: yes
@@ -37,6 +37,17 @@ NLCommand("clear-all")
 NLQuit()
 ```
 
+##Modelación basada en agentes y netlogo
+
+La modelación basada en agentes es la simulación de acciones e interacciones de individuos autónomos dentro de un entorno, y permite determinar qué efectos producen en el sistema. Este tipo de modelo es una interacción entre teoría de juegos, sistemas complejos, emergencia, sistemas multi-agente, y programación evolutiva. Los modelos simulan las operaciones simultáneas de entidades múltiples en un intento de recrear y predecir las acciones de fenómenos complejos. Dentro de sus ventajas está el poder modelar comportamientos sumamente complejos basados en reglas relativamente sencillas y la posibilidad de trabajar en un entorno tanto espacial como temporalmente explícito.
+
+####Netlogo
+
+Dentro de los entornos de programación que permiten trabajar con este tipo de modelos uno de los más utilizados es el programa netlogo. Dentro de las múltiples ventajas de netlogo frente a programas competidores es el que es un programa abierto, con posibilidad de interactuar con el entorno estadístico del programa R y también el que además del modelo genera una interfaz gráfica de usuario, la cual permite a usuarios menos experimentados que el programador pero con mayor experiencia en el sistema manipular variables mediante a deslizadores y otros botones interactivos.
+A continuación se ve imagen del programa modelando el flujo de turistas en el Parque Torres del Paine.
+
+![](C:/Users/corcoranbarriosd/Documents/Paine/10142.png)
+
 ##Parámetros del modelo
 
 ####1. Proporción de turistas que ocupa cada sendero 
@@ -63,8 +74,9 @@ con esto los parametros del modelo fueron fijados de la siguiente forma:
 * sunrise 6
 * sunset 18
 
+## Netlogo
 
-![](C:/Users/corcoranbarriosd/Documents/Paine/10142.png)
+
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
