@@ -44,7 +44,7 @@ La modelación basada en agentes es la simulación de acciones e interacciones d
 ####Netlogo
 
 Dentro de los entornos de programación que permiten trabajar con este tipo de modelos uno de los más utilizados es el [programa netlogo](https://ccl.northwestern.edu/netlogo/). Dentro de las múltiples ventajas de netlogo frente a programas competidores es el que es un programa abierto, con posibilidad de interactuar con el entorno estadístico del programa R y también el que además del modelo genera una interfaz gráfica de usuario, la cual permite a usuarios menos experimentados que el programador pero con mayor experiencia en el sistema manipular variables mediante a deslizadores y otros botones interactivos.
-A continuación se ve imagen del programa modelando el flujo de turistas en el Parque Torres del Paine.
+A continuación se ve imagen del programa modelando el flujo de turistas en el Parque Torres del Paine. El significado de cada parametro y como ajustarlos se pueden leer en el [manual](https://github.com/derek-corcoran-barrios/netlogoPNTP/blob/master/Manual%20modelo%20visitantes%20PNTP.pdf).
 
 ![](C:/Users/corcoranbarriosd/Documents/Paine/10142.png)
 
