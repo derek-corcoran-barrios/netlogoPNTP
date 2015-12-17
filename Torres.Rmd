@@ -1,10 +1,16 @@
 ---
 title: "Informe Torres del Paine"
 author: "Derek Corcoran"
-date: "December 16, 2015"
+date: "December 17, 2015"
 output: pdf_document
+toc: yes
+header-includes:
+    - \usepackage{fancyhdr}
 ---
-
+\addtolength{\headheight}{1.0cm}
+\pagestyle{fancyplain} 
+\rhead{\includegraphics[height=1.2cm]{C:/Users/corcoranbarriosd/Documents/Paine/Original-trans.png}} 
+\renewcommand{\headrulewidth}{0pt}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(RNetLogo)
@@ -26,25 +32,60 @@ NLCommand("setup")
 
 NLDoCommand(351, "go")
 
-DF <- NLDoReport(10, "go", c("(ticks + 600) / (ticks-to-an-hour * 24)","count tourists", "count tourists-on patch -19 -170", "count tourists-on patch -15 -171", "(count tourists-on patch -50 -80) + (count tourists-on patch -48 -78)", "count tourists-on patch -115 4", "(count tourists-on patch -11 -17) + (count tourists-on patch -8 -25)", "count tourists-on patch -5 39", "count tourists-on patch 22 -21", "count tourists-on patch 36 -22", "count tourists-on patch 96 57", "count tourists-on patch 73 79", "(count tourists-on patch 115 32) + (count tourists-on patch 115 33)", "count tourists-on patch 129 54","(([excess] of patch 96 57)/ ticks-to-an-hour )","((([excess] of patch 115 32)/ ticks-to-an-hour ) + (([excess] of patch 115 33)/ ticks-to-an-hour )) * 0.5", "(([excess] of patch 36 -22)/ ticks-to-an-hour )", "(([excess] of patch 22 -21)/ ticks-to-an-hour )"), as.data.frame = TRUE, df.col.names = c("Days", "Total.tourists", "Tourists1", "Tourists2", "Tourists3", "Tourists4", "Tourists6", "Tourists7", "Tourists9", "Tourists10", "Tourists11", "Tourists12", "Tourists13", "Tourists14", "Exceso-Chileno", "Exceso-torre-cn","Exceso-cuernos", "Exceso-Frances"))
+DF <- NLDoReport(50000, "go", c("(ticks + 600) / (ticks-to-an-hour * 24)","count tourists", "count tourists-on patch -19 -170", "count tourists-on patch -15 -171", "(count tourists-on patch -50 -80) + (count tourists-on patch -48 -78)", "count tourists-on patch -115 4", "(count tourists-on patch -11 -17) + (count tourists-on patch -8 -25)", "count tourists-on patch -5 39", "count tourists-on patch 22 -21", "count tourists-on patch 36 -22", "count tourists-on patch 96 57", "count tourists-on patch 73 79", "(count tourists-on patch 115 32) + (count tourists-on patch 115 33)", "count tourists-on patch 129 54","(([excess] of patch 96 57)/ ticks-to-an-hour )","((([excess] of patch 115 32)/ ticks-to-an-hour ) + (([excess] of patch 115 33)/ ticks-to-an-hour )) * 0.5", "(([excess] of patch 36 -22)/ ticks-to-an-hour )", "(([excess] of patch 22 -21)/ ticks-to-an-hour )"), as.data.frame = TRUE, df.col.names = c("Days", "Total.tourists", "Tourists1", "Tourists2", "Tourists3", "Tourists4", "Tourists6", "Tourists7", "Tourists9", "Tourists10", "Tourists11", "Tourists12", "Tourists13", "Tourists14", "Exceso-Chileno", "Exceso-torre-cn","Exceso-cuernos", "Exceso-Frances"))
 NLCommand("clear-all")
 NLQuit()
 ```
 
+##Parámetros del modelo
+
+####1. Proporción de turistas que ocupa cada sendero 
+
+Los parámetros del modelo fueron ajustados de acuerdo a los datos entregados por las encuestas realizadas por la *Fundación CEQUA*, en conjunto con las varias tablas entregadas por *CONAF*
+
+####2. Capacidad de carga de los campamentos
+
+el número máximo de turistas se determinó en base al documento 15 que muestra la capacidad de acogida confirmada por *Fantástico Sur*. Estos son los únicos campamentos que basan su capacidad de carga según número de personas, por lo que fueron los únicos evaluados en esta modelación.
+
+####3. Numero total de turistas diarios
+
+Se observó el registro de ingreso de visitantes de temporada alta del Paine para la temporada 2014-2015, y para simular un mes de transito de visitantes se utilizó el mes con más turistas y se dividió por la cantidad de días totales, esto da como promedio un ingreso de 720 turistas en promedio por día, los cuales fueron separados proporcionalmente según lo mencionado en el punto 1.
+
+con esto los parametros del modelo fueron fijados de la siguiente forma:
+
+* num-tourists-w1 24
+* num-tourists-w2 19
+* num-tourists-PG 12
+* num-tourists-PP 3
+* time-of-stay 37
+* threshold 70
+* ticks to an hour 50
+* sunrise 6
+* sunset 18
+
+
+![](C:/Users/corcoranbarriosd/Documents/Paine/10142.png)
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
 DF <- mutate(DF, day = ceiling(Days))
-DF <- mutate(DF, time = Days-(day-1))
+DF <- mutate(DF, time = ((Days-(day-1))*24))
 
-summary(DF)
+SumDF <-summarise(group_by(DF, day), mean = mean(Total.tourists), max.tourists = max(Total.tourists), SD=(sd(Total.tourists)))
 
-SumDF <-summarise(group_by(DF, day), mean = mean(Total.tourists), max.tourists = max(Total.tourists))
+ggplot(SumDF, aes(x= day, y = mean)) +geom_ribbon(aes(ymax=(mean+SD), ymin=(mean-SD)), fill="lightblue")+ geom_point() + geom_line() + theme_bw()+ theme(axis.line = element_line(colour = "black"), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) + geom_vline(xintercept = 5, colour="darkgrey", linetype = "longdash") + geom_abline(slope = 0, intercept = 1429, colour="darkgrey")+ labs(x="Día", y="Turistas totales en el parque (promedio)")
+```
 
-ggplot(SumDF, aes(x= day, y = mean)) + geom_point() + geom_smooth()
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(stargazer)
+```
 
-#DF <- filter(DF, day > 6)
-DF$day <- as.factor(DF$day)
-DF$time <- as.factor(DF$time)
-AV.day <- summarise(group_by(DF, time), mean = mean(Total.tourists), SD = sd(Total.tourists))
-Av.day <- mutate(AV.day, up = mean + SD, low = mean - SD)
-ggplot(Av.day, aes(x= as.numeric(time), y = mean)) + geom_smooth()
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+DF <- filter(DF, day >= 5)
+DF1 <-(DF)
+colnames(DF1)<- c("Dias", "Turistas totales", "Touristas Camp1", "Turistas Camp2", "Turistas camp3", "Turistas camp4", "Turistas camp6", "Touristas Camp7", "Turistas Camp9", "Turistas camp10", "Turistas camp11", "Turistas camp12",  "Turistas camp13", "Turistas camp14", "Exceso-Chileno", "Exceso-torre-cn", "Exceso-cuernos","Exceso-Frances","Día", "time")
+DF1[15:18] <- DF1[15:18]/max(DF1$Dias)
+stargazer(DF1[,2:19], type = "latex", digits = 2, digit.separator = ".", decimal.mark = ",", nobs = FALSE, median = TRUE)
+
+
 ```
