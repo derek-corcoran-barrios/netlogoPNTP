@@ -1,16 +1,14 @@
 ---
 title: "Informe Torres del Paine"
-author: "Derek Corcoran e-mail: derek.corcoran.barrios@gmail.com" 
+author: 'Derek Corcoran e-mail: derek.corcoran.barrios@gmail.com'
 date: "December 17, 2015"
-output: pdf_document
+output: word_document
+header-includes: \usepackage{fancyhdr}
 toc: yes
-header-includes:
-    - \usepackage{fancyhdr}
 ---
 \addtolength{\headheight}{1.0cm}
 \pagestyle{fancyplain} 
-\rhead{\includegraphics[height=1.2cm]{C:/Users/corcoranbarriosd/Documents/Paine/Original-trans.png}} 
-\renewcommand{\headrulewidth}{0pt}
+
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(RNetLogo)
@@ -109,7 +107,7 @@ En la tabla siguiente vemos los resultados para la simulación, vemos que la can
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, results='asis', cache= TRUE}
 
-stargazer(DF1[,2:19], type = "latex", digits = 2, digit.separator = ".", decimal.mark = ",", nobs = FALSE, median = TRUE)
+stargazer(DF1[,2:19], type = "html", digits = 2, digit.separator = ".", decimal.mark = ",", nobs = FALSE, median = TRUE, out = "table1.html")
 
 
 ```
